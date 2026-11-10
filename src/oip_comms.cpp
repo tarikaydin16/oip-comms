@@ -447,7 +447,7 @@ void OIPComms::opc_write(const String &tag_group_name, const String &tag_path) {
 
 #define OIP_OPC_SET(a, b, c, d) \
 void OIPComms::opc_tag_set_##a(const String &tag_group_name, const String &tag_path, const godot::Variant value) { \
-	if (value.get_type() == Variant::##d) {                                        \
+	if (value.get_type() == Variant::d) {                                        \
 		if (!opc_ua_client_connected(tag_group_name)) return;                      \
 		OpcUaTag &tag = tag_groups[tag_group_name].opc_ua_tags[tag_path];          \
 		if (!tag.initialized) return;                                              \
@@ -479,7 +479,7 @@ OIP_OPC_SET(float32, float, FLOAT, FLOAT)
 
 #define OIP_ADS_SET(a, b, d) \
 void OIPComms::ads_tag_set_##a(const String &tag_group_name, const String &tag_path, const godot::Variant value) { \
-	if (value.get_type() != Variant::##d) {                                                 \
+	if (value.get_type() != Variant::d) {                                                 \
 		print("OIP Comms: Supplied data type incorrect for " + tag_path, true);             \
 		return;                                                                              \
 	}                                                                                        \
@@ -1541,7 +1541,7 @@ void OIPComms::process_mqtt_tag_group(const String &tag_group_name) {
 
 #define OIP_MQTT_SET(a, b, d) \
 void OIPComms::mqtt_tag_set_##a(const String &tag_group_name, const String &tag_path, const godot::Variant value) { \
-	if (value.get_type() != Variant::##d) {                                            \
+	if (value.get_type() != Variant::d) {                                            \
 		print("OIP Comms: Supplied data type incorrect for " + tag_path, true);        \
 		return;                                                                         \
 	}                                                                                   \

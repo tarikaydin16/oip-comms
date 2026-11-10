@@ -2,7 +2,7 @@
 #define OIP_COMMS_H
 
 #include "libplctag.h"
-#include "open62541.h"
+#include <open62541.h>
 #include "S7Com.hpp"
 
 #include <godot_cpp/classes/node.hpp>

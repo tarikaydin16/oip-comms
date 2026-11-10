@@ -1,3 +1,4 @@
+#include <algorithm>
 // S7Com for OIP, S7_1200 & S7_1500
 // interface similar to libplctag for a simple integration
 // F Chaxel 2026

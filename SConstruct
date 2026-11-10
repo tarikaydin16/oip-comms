@@ -86,11 +86,21 @@ if env["platform"] == "windows":
     else:
         print("ADS variant: standalone (TcAdsDll not found at " + beckhoff_ads_root + ")")
 else:
-    env.Append(LINKFLAGS=["-static"])
+    # Windows dışı: platforma özel POSIX open62541 başlığı ve statik kütüphaneler.
+    # -static paylaşımlı kütüphane çıktısıyla çalışmıyor, kaldırıldı.
+    env.Prepend(CPPPATH=["include/" + env["platform"] + "/"])
+    env.Append(LIBPATH=["lib/" + env["platform"] + "/"])
+    env.Append(CPPDEFINES=["HAVE_GCC_SYNC_BUILTINS"])
+    env.Append(LIBS=["pthread"])
 # Paho's .c files need paho/src/ FIRST so their internal "Log.h" wins over ADS's
 # (the reverse of the main env's order). The clone also isolates Paho-only defines.
 paho_env = env.Clone()
 paho_env.Replace(CPPPATH=["paho/src/", "src/", "ads/AdsLib/"])
+if env["platform"] == "macos":
+    # macOS'ta ads/AdsLib/semaphore.h, Paho'nun <semaphore.h> sistem başlığını
+    # gölgeliyor. ADS dizinini yalnızca tırnaklı include'lara aç.
+    paho_env.Replace(CPPPATH=["paho/src/", "src/"])
+    paho_env.Append(CCFLAGS=["-iquote", "ads/AdsLib/"])
 if env["platform"] == "windows":
     # WIN32_LEAN_AND_MEAN keeps <windows.h> from pulling the legacy <winsock.h>,
     # which otherwise collides with the <winsock2.h> Paho actually uses. The
